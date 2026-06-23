@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- CSP: backstop against XSS — only our own code, Google Fonts/Maps, and Sentry may load.
+         'unsafe-inline' is required because the app uses inline styles + one inline SW script. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js-de.sentry-cdn.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.sentry.io https://*.de.sentry.io https://js-de.sentry-cdn.com https://fonts.googleapis.com https://fonts.gstatic.com https://inputtools.google.com; frame-src https://www.google.com; object-src 'none'; base-uri 'self'" />
+    <title>Sri Murugan & Co — Fresh vegetables, Oddanchatram Market</title>
+    <meta name="description" content="Sri Murugan & Co — vegetable commission agent & order supplier at Gandhi Market, Oddanchatram. Fresh farm produce, honest weighing, fair daily wholesale rates." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+
+    <!-- PWA: installable on Android/iOS home screen, full-screen, offline app shell -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#1a7a45" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SM & Co" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <!-- Sentry browser error reporting — production only (skips localhost dev and staging). -->
+    <script>
+      (function () {
+        var h = location.hostname;
+        if (h === 'localhost' || h === '127.0.0.1' || h.indexOf('staging.') === 0) return;
+        var s = document.createElement('script');
+        s.src = 'https://js-de.sentry-cdn.com/dafa807fb82904f14e49773adb4f0d03.min.js';
+        s.crossOrigin = 'anonymous';
+        document.head.appendChild(s);
+      })();
+    </script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Marketing homepage entry — its own bundle, no dependency on the staff app. -->
+    <script type="module" src="/src/home.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function () {});
+        });
+      }
+    </script>
+  </body>
+</html>

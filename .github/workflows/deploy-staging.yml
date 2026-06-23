@@ -1,0 +1,57 @@
+name: Deploy to Staging
+
+# Staging mirror of the live deploy. Triggers on push to the `staging` branch (or a
+# manual run). Uploads to a SEPARATE docroot (staging.smand.co) using SEPARATE FTP
+# secrets, so it can never touch the live site. The staging docroot keeps its own
+# config/database.php pointing at the CLONED staging database (placed once by hand,
+# never deployed) — so the same code runs safely against test data.
+#
+# Requires three GitHub secrets (Settings → Secrets and variables → Actions):
+#   FTP_SERVER_STAGING, FTP_USERNAME_STAGING, FTP_PASSWORD_STAGING
+# The FTP account must be rooted at the staging subdomain's document root.
+
+on:
+  push:
+    branches: [ staging ]
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install & Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Install LFTP
+        run: sudo apt-get install -y lftp
+
+      - name: Deploy via LFTP (upload only, never delete)
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER_STAGING }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME_STAGING }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD_STAGING }}
+        run: |
+          lftp <<EOF
+          set ftp:ssl-allow true
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+          mirror --reverse --verbose frontend/dist/ /
+          mirror --reverse --verbose backend/api/ /api/
+          mirror --reverse --verbose backend/helpers/ /helpers/
+          mirror --reverse --verbose backend/data/ /data/
+          rm -f /api/upload.php /api/auth_old.php /api/test.php /api/testauth.php /api/error_log
+          quit
+          EOF

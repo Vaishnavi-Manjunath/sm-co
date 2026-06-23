@@ -1,0 +1,42 @@
+name: Security scan (Semgrep)
+
+# Free static analysis (SAST) for the PHP backend and React frontend.
+# Runs on every push to main, on PRs, and weekly. Findings appear in the
+# Actions log — open the latest run to read them. Never blocks the deploy.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  schedule:
+    - cron: '0 3 * * 1'   # Mondays 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet semgrep
+      - name: Scan (security-audit + PHP + JavaScript + secrets)
+        continue-on-error: true
+        run: |
+          semgrep scan \
+            --config p/security-audit \
+            --config p/php \
+            --config p/javascript \
+            --config p/secrets \
+            --exclude frontend/dist --exclude node_modules \
+            --json --output semgrep.json
+          echo "=== Findings (human-readable) ==="
+          semgrep scan \
+            --config p/security-audit --config p/php --config p/javascript --config p/secrets \
+            --exclude frontend/dist --exclude node_modules || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-findings
+          path: semgrep.json
+          if-no-files-found: ignore

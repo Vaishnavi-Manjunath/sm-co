@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Serve SSL domain-validation files directly (AutoSSL / Let's Encrypt / ZeroSSL).
+    RewriteRule ^\.well-known/ - [L]
+
+    RewriteRule \.php$ - [L]
+
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>

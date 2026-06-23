@@ -1,0 +1,35 @@
+name: Homepage monitor
+
+# Loads the live homepage AND the staff app in a real headless browser every 30 min
+# and fails if either doesn't render (catches white-screens that return HTTP 200 but
+# crash in JS — what a plain uptime check misses). On failure GitHub emails you
+# (ensure Settings → Notifications → Actions email-on-failure is on).
+# 30-min cadence keeps it comfortably inside the free Actions minutes; tighten the
+# cron if you move to a paid plan. Run manually any time via "Run workflow".
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: homepage-monitor
+  cancel-in-progress: true
+
+jobs:
+  render-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # Install only the Playwright package (no browser download) — we drive the
+      # runner's pre-installed Google Chrome via channel:'chrome'.
+      - name: Install Playwright (no browsers)
+        run: |
+          npm init -y >/dev/null 2>&1
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i playwright@^1.60.0 >/dev/null 2>&1
+      - name: Render check — smand.co/ and /app/
+        run: node scripts/smoke.mjs https://smand.co

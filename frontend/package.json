@@ -1,0 +1,24 @@
+{
+  "name": "rs-market",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build -c vite.home.config.js && vite build -c vite.config.js && node -e \"require('fs').renameSync('dist/app/app.html','dist/app/index.html')\" && node scripts/stamp-sw.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^6.0.3",
+    "vite": "^4.4.0"
+  }
+}

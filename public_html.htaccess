@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Always serve SSL domain-validation files directly (AutoSSL / Let's Encrypt / ZeroSSL).
+    # Without this, the "everything → React" rule below can swallow the validation request.
+    RewriteRule ^\.well-known/ - [L]
+
+    # Let PHP files run directly
+    RewriteRule \.php$ - [L]
+
+    # Let existing files and folders through
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes to React
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>

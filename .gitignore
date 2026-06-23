@@ -1,0 +1,20 @@
+node_modules/
+frontend/dist/
+frontend/android/
+frontend/.gradle/
+.DS_Store
+backend/config/database.php
+*.zip
+cgi-bin/
+nc_assets/
+pilot_backup/
+
+# Claude Code transient files
+.claude/scheduled_tasks.lock
+
+# Local scratch / sample bills (not for the repo)
+Sample bill /
+
+# PHP error logs (server-generated, never commit)
+error_log
+**/error_log

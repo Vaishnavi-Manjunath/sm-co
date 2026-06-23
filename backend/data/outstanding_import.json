@@ -1,0 +1,555 @@
+{
+ "as_of": "2026-06-03",
+ "customers": [
+  {
+   "code": "AJN(ODC)",
+   "total": 2480.0
+  },
+  {
+   "code": "AK(ODC)",
+   "total": 1130479.0
+  },
+  {
+   "code": "AKBAR-ODC",
+   "total": 131008.0
+  },
+  {
+   "code": "ARS-(ODC) .",
+   "total": 91871.0
+  },
+  {
+   "code": "ARS-NAGARAJ",
+   "total": 7500.0
+  },
+  {
+   "code": "ASHOK(ODC)",
+   "total": 32467.0
+  },
+  {
+   "code": "ASS-SANKAR(PSM)",
+   "total": 199058.0
+  },
+  {
+   "code": "ASV-KARTHIK",
+   "total": 670991.0
+  },
+  {
+   "code": "AVK-KARTHIK",
+   "total": 134500.0
+  },
+  {
+   "code": "AVM-SELVAM",
+   "total": 345589.0
+  },
+  {
+   "code": "BABY GINGER",
+   "total": 17800.0
+  },
+  {
+   "code": "CASH -1",
+   "total": 418747.0
+  },
+  {
+   "code": "CASH(K)",
+   "total": 51080.0
+  },
+  {
+   "code": "CM(MUNIYANDI-KCM)",
+   "total": 22740.0
+  },
+  {
+   "code": "CMB-(ODC)",
+   "total": 248031.0
+  },
+  {
+   "code": "DB-BALAGI",
+   "total": 474004.0
+  },
+  {
+   "code": "DHANUSH(ODC)",
+   "total": 282488.0
+  },
+  {
+   "code": "DK(BOLI)",
+   "total": 168216.0
+  },
+  {
+   "code": "EAS-ERNAKULAM",
+   "total": 193360.0
+  },
+  {
+   "code": "ESWARAN(LSK)",
+   "total": 40066.0
+  },
+  {
+   "code": "GSM(SALES)",
+   "total": 9964.0
+  },
+  {
+   "code": "GT(ODC)",
+   "total": 72003.0
+  },
+  {
+   "code": "JPN(ODC)",
+   "total": 122555.0
+  },
+  {
+   "code": "K.SIVA(LABOUR)",
+   "total": 4352.0
+  },
+  {
+   "code": "KALAIMGAL(VAN)",
+   "total": 15600.0
+  },
+  {
+   "code": "KALEESWARAN(BOLI)",
+   "total": 224203.0
+  },
+  {
+   "code": "KANNAN(ODC)",
+   "total": 129977.0
+  },
+  {
+   "code": "KARTHIK(MMS)",
+   "total": 361985.0
+  },
+  {
+   "code": "KARUPPUSAMY(AK)",
+   "total": 81111.0
+  },
+  {
+   "code": "KCM -MANJERI",
+   "total": 1476.0
+  },
+  {
+   "code": "KGK(ODC)",
+   "total": 41699.0
+  },
+  {
+   "code": "KJS(KCM)",
+   "total": 6780.0
+  },
+  {
+   "code": "KK-KALIDAS",
+   "total": 6146.0
+  },
+  {
+   "code": "KKV-VIGNESH(ODC)",
+   "total": 37747.0
+  },
+  {
+   "code": "KMS-(KKP)",
+   "total": 5471.0
+  },
+  {
+   "code": "KN(ODC)",
+   "total": 28300.0
+  },
+  {
+   "code": "KPN-KARTHIK",
+   "total": 97237.0
+  },
+  {
+   "code": "KPS(ODC)",
+   "total": 17853.0
+  },
+  {
+   "code": "KR-KANAGU",
+   "total": 73805.0
+  },
+  {
+   "code": "KSK(ODC)",
+   "total": 16802.0
+  },
+  {
+   "code": "KSM-AMH(ODC)",
+   "total": 85777.0
+  },
+  {
+   "code": "KSP-PALANISAMY",
+   "total": 295345.0
+  },
+  {
+   "code": "KS-SEKAR",
+   "total": 31226.0
+  },
+  {
+   "code": "KT-PRABHU",
+   "total": 154029.0
+  },
+  {
+   "code": "KU.PA(ODC)",
+   "total": 12980.0
+  },
+  {
+   "code": "LK.KIRSHANAN(BOLI)",
+   "total": 9246.0
+  },
+  {
+   "code": "LL-DM(ODC)",
+   "total": 1800.0
+  },
+  {
+   "code": "LRG-(RR)",
+   "total": 189114.0
+  },
+  {
+   "code": "MAKDHOOM",
+   "total": 6350.0
+  },
+  {
+   "code": "MATHAN-MM",
+   "total": 23895.0
+  },
+  {
+   "code": "MDU-SALES",
+   "total": 11300.0
+  },
+  {
+   "code": "MKM-KALIMUTHU",
+   "total": 11200.0
+  },
+  {
+   "code": "MLT - VILUPURAM",
+   "total": 412283.0
+  },
+  {
+   "code": "MMS-MUTHURAJ(ODC)",
+   "total": 84117.0
+  },
+  {
+   "code": "MPS(ODC)",
+   "total": 225229.0
+  },
+  {
+   "code": "MR(ODC)",
+   "total": 314291.0
+  },
+  {
+   "code": "MSM(ODC)",
+   "total": 453106.0
+  },
+  {
+   "code": "MURUGAN-N.K",
+   "total": 1500.0
+  },
+  {
+   "code": "MURUGESH(BOLI)",
+   "total": 10756.0
+  },
+  {
+   "code": "MVB",
+   "total": 34207.0
+  },
+  {
+   "code": "NAVIN(ODC)",
+   "total": 644849.0
+  },
+  {
+   "code": "NCR - THIRUCHUR",
+   "total": 39551.0
+  },
+  {
+   "code": "NPK(ODC)",
+   "total": 9943.0
+  },
+  {
+   "code": "NP-NACHIMUTHU(ODC)",
+   "total": 384446.0
+  },
+  {
+   "code": "OM-MURUGA(ODC)",
+   "total": 772090.0
+  },
+  {
+   "code": "PGT-SALES",
+   "total": 2181.0
+  },
+  {
+   "code": "PKS-KANNAN",
+   "total": 40268.0
+  },
+  {
+   "code": "PMS BHAI",
+   "total": 247286.0
+  },
+  {
+   "code": "PONRAJ(ODC)",
+   "total": 559055.0
+  },
+  {
+   "code": "POOMANI(ODC)",
+   "total": 206638.0
+  },
+  {
+   "code": "PSV-ODC",
+   "total": 48098.0
+  },
+  {
+   "code": "PVS VELLASAMY(BOLI)",
+   "total": 257025.0
+  },
+  {
+   "code": "PV-VENGATESH",
+   "total": 139116.0
+  },
+  {
+   "code": "RA(ODC)",
+   "total": 115253.0
+  },
+  {
+   "code": "RAMKUMAR",
+   "total": 11320.0
+  },
+  {
+   "code": "RJS",
+   "total": 113365.0
+  },
+  {
+   "code": "RKS(ODC)",
+   "total": 26721.0
+  },
+  {
+   "code": "RKV(ODC)",
+   "total": 860.0
+  },
+  {
+   "code": "RR(ODC)",
+   "total": 8135.0
+  },
+  {
+   "code": "RSR-MURALI",
+   "total": 77404.0
+  },
+  {
+   "code": "SAKTHI(BOLI)",
+   "total": 288124.0
+  },
+  {
+   "code": "SANGILI(BMV)",
+   "total": 87592.0
+  },
+  {
+   "code": "SARAVANAN(ODC)",
+   "total": 23943.0
+  },
+  {
+   "code": "SAT(ODC)",
+   "total": 90847.0
+  },
+  {
+   "code": "SATHISH",
+   "total": 2864.0
+  },
+  {
+   "code": "SEENI(BOLI)",
+   "total": 37581.0
+  },
+  {
+   "code": "SEENI-OM",
+   "total": 82073.0
+  },
+  {
+   "code": "SIVA(ODC)",
+   "total": 27726.0
+  },
+  {
+   "code": "SK.THANGAVEL",
+   "total": 626988.0
+  },
+  {
+   "code": "SKM BHAI",
+   "total": 6630.0
+  },
+  {
+   "code": "SK-PIRASANTH",
+   "total": 184158.0
+  },
+  {
+   "code": "SKT-THIRUMALASAMY",
+   "total": 366118.0
+  },
+  {
+   "code": "SM.MUTHURAJ",
+   "total": 130000.0
+  },
+  {
+   "code": "SMT(ODC)",
+   "total": 145374.0
+  },
+  {
+   "code": "SPS-BALAN(ODC)",
+   "total": 13356.0
+  },
+  {
+   "code": "SR-KANNAN",
+   "total": 36908.0
+  },
+  {
+   "code": "SSA(ODC)",
+   "total": 1378821.0
+  },
+  {
+   "code": "SSK(ODC)",
+   "total": 229718.0
+  },
+  {
+   "code": "SSN(ODC)",
+   "total": 32717.0
+  },
+  {
+   "code": "SSV(ODC)",
+   "total": 243613.0
+  },
+  {
+   "code": "STM(ODC)",
+   "total": 131828.0
+  },
+  {
+   "code": "SUBRAMANI(N.M.K)",
+   "total": 139859.0
+  },
+  {
+   "code": "SURESH(GINGER)",
+   "total": 31000.0
+  },
+  {
+   "code": "SVS(ODC)",
+   "total": 177089.0
+  },
+  {
+   "code": "SVT(ODC)",
+   "total": 119568.0
+  },
+  {
+   "code": "TAM(ODC)",
+   "total": 243356.0
+  },
+  {
+   "code": "TKB-KANNANUR",
+   "total": 65520.0
+  },
+  {
+   "code": "TKS(M.T.P)",
+   "total": 5390.0
+  },
+  {
+   "code": "TM&CO",
+   "total": 260919.0
+  },
+  {
+   "code": "TM-MANI(ODC)",
+   "total": 47475.0
+  },
+  {
+   "code": "TMS-MANI(ODC)",
+   "total": 165600.0
+  },
+  {
+   "code": "TN(K.L)",
+   "total": 21240.0
+  },
+  {
+   "code": "TNI SALES",
+   "total": 12564.0
+  },
+  {
+   "code": "TPR -VILUPURAM",
+   "total": 118094.0
+  },
+  {
+   "code": "VAS(ODC)",
+   "total": 2579.0
+  },
+  {
+   "code": "VKAT-SAAVANAN(ODC)",
+   "total": 34651.0
+  },
+  {
+   "code": "VKM(ODC)",
+   "total": 87586.0
+  },
+  {
+   "code": "VMT(BV)",
+   "total": 58288.0
+  },
+  {
+   "code": "VMT(CK&CO)",
+   "total": 505141.0
+  },
+  {
+   "code": "VSM(ODC)",
+   "total": 68164.0
+  },
+  {
+   "code": "VVG(ODC)",
+   "total": 31338.0
+  },
+  {
+   "code": "VVM(ODC)",
+   "total": 34154.0
+  },
+  {
+   "code": "Y-NM(ODC)",
+   "total": 159487.0
+  }
+ ],
+ "suppliers_existing": [
+  {
+   "code": "IK TRADERS",
+   "total": 206866.0
+  }
+ ],
+ "suppliers_new": [
+  {
+   "code": "A.MAA",
+   "name_en": "A.MAA",
+   "total": 53411.0
+  },
+  {
+   "code": "AM SURANDAI",
+   "name_en": "AM SURANDAI",
+   "total": 17548.0
+  },
+  {
+   "code": "CASH.",
+   "name_en": "CASH.",
+   "total": 2460.0
+  },
+  {
+   "code": "KS-SKM.",
+   "name_en": "KS-SKM.",
+   "total": 7044127.0
+  },
+  {
+   "code": "KSM",
+   "name_en": "KSM",
+   "total": 2827.0
+  },
+  {
+   "code": "RAVI",
+   "name_en": "RAVI",
+   "total": 16642.0
+  },
+  {
+   "code": "RJ.",
+   "name_en": "RJ.",
+   "total": 8068.0
+  },
+  {
+   "code": "SM&CO.",
+   "name_en": "SM&CO.",
+   "total": 65483.0
+  },
+  {
+   "code": "VSP-SALES",
+   "name_en": "VSP-SALES",
+   "total": 525639.0
+  },
+  {
+   "code": "VVC",
+   "name_en": "VVC",
+   "total": 19020.0
+  }
+ ]
+}

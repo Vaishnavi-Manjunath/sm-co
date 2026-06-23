@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>IDNUK → SaaS · Strategic Plan</title>
+<style>
+  :root{
+    --g1:#0f4c2a; --g2:#1a7a45; --g3:#16a34a; --ink:#0f172a; --muted:#64748b;
+    --line:#e2e8f0; --bg:#f1f5f9; --card:#ffffff; --amber:#b45309; --blue:#1d4ed8; --red:#dc2626;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .deck{max-width:1120px;margin:0 auto;padding:24px}
+  .slide{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:44px 52px;margin:0 0 22px;
+    box-shadow:0 6px 24px rgba(15,23,42,.06);min-height:560px;position:relative;overflow:hidden}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--g2);font-weight:800;margin:0 0 10px}
+  h1{font-size:40px;line-height:1.08;margin:0 0 12px;color:var(--g1);font-weight:800;letter-spacing:-.5px}
+  h2{font-size:27px;line-height:1.14;margin:0 0 16px;color:var(--g1);font-weight:800;letter-spacing:-.3px}
+  h3{font-size:16px;margin:0 0 8px;color:var(--ink);font-weight:700}
+  p{font-size:15px;line-height:1.62;color:#1e293b;margin:0 0 12px}
+  .muted{color:var(--muted)}
+  .lead{font-size:18px;line-height:1.6;color:#334155}
+  ul{margin:0 0 12px;padding-left:20px}
+  li{font-size:14.5px;line-height:1.6;margin:6px 0}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  .card{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .card.green{background:#f0fdf4;border-color:#bbf7d0}
+  .card.amber{background:#fffbeb;border-color:#fde68a}
+  .card.blue{background:#eff6ff;border-color:#bfdbfe}
+  .card.red{background:#fef2f2;border-color:#fecaca}
+  .tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;letter-spacing:.04em;text-transform:uppercase}
+  .tag.rec{background:var(--g2);color:#fff}
+  .tag.no{background:#fee2e2;color:#b91c1c}
+  .tag.maybe{background:#fef9c3;color:#854d0e}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0 8px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+  th{background:#f8fafc;color:#334155;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  td.r,th.r{text-align:right}
+  .pill{font-size:12px;color:var(--muted);font-weight:600}
+  .big{font-size:34px;font-weight:800;color:var(--g1);line-height:1}
+  .num{font-variant-numeric:tabular-nums}
+  .foot{position:absolute;bottom:16px;right:24px;font-size:11px;color:#94a3b8}
+  .foot-l{position:absolute;bottom:16px;left:24px;font-size:11px;color:#94a3b8}
+  .cover{background:linear-gradient(135deg,#0f4c2a 0%,#1a7a45 55%,#0d3d22 100%);color:#fff;border:none}
+  .cover h1{color:#fff;font-size:52px}
+  .cover .kicker{color:#bbf7d0}
+  .cover p{color:#dcfce7;font-size:18px}
+  .chip{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;
+    padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;margin:5px 6px 0 0}
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+  .step{flex:1;min-width:150px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;margin:6px;position:relative}
+  .step .n{width:24px;height:24px;border-radius:50%;background:var(--g2);color:#fff;font-weight:800;font-size:13px;
+    display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
+  .arrow{align-self:center;color:#94a3b8;font-size:22px;padding:0 2px}
+  .kv{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .kv b{color:var(--g1)}
+  .timeline{position:relative;margin-top:8px}
+  .bar{display:flex;align-items:center;margin:7px 0;font-size:13px}
+  .bar .lbl{width:230px;font-weight:600;color:#334155}
+  .bar .track{flex:1;background:#f1f5f9;border-radius:6px;height:22px;position:relative;overflow:hidden}
+  .bar .fill{position:absolute;top:0;height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;color:#fff;font-size:11px;font-weight:700}
+  .check li{list-style:none;margin-left:-18px;padding-left:24px;position:relative}
+  .check li:before{content:"✓";position:absolute;left:0;color:var(--g3);font-weight:800}
+  .x li:before{content:"✕";color:var(--red)}
+  .small{font-size:12.5px}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  svg{max-width:100%}
+  @media print{
+    body,html{background:#fff}
+    .deck{max-width:none;margin:0;padding:0}
+    .slide{break-after:page;page-break-after:always;margin:0;border:none;border-radius:0;box-shadow:none;min-height:96vh;padding:9mm 12mm}
+    .slide:last-child{break-after:auto}
+  }
+  @page{size:A4 landscape;margin:0}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <p class="kicker">Strategic Architecture Plan · Confidential</p>
+  <h1>IDNUK → SaaS</h1>
+  <p class="lead" style="max-width:760px">Turning the proven Sri&nbsp;Murugan&nbsp;&amp;&nbsp;Co mandi platform into a self-service, multi-tenant SaaS — <b>without touching the current data model</b>.</p>
+  <div style="margin-top:18px">
+    <span class="chip">Self-service signup at idnuk.com</span>
+    <span class="chip">14-day free trial → subscription</span>
+    <span class="chip">Per-customer customization</span>
+    <span class="chip">Wave 1: 200 customers</span>
+    <span class="chip">99%+ uptime · secure · scalable</span>
+  </div>
+  <p class="foot-l" style="color:#bbf7d0">Prepared for: Manjunath Sekar (Owner)</p>
+  <p class="foot" style="color:#bbf7d0">Today · v1.0</p>
+</section>
+
+<!-- 2 EXEC SUMMARY -->
+<section class="slide">
+  <p class="kicker">Executive Summary</p>
+  <h2>The short answer to your four questions</h2>
+  <div class="grid g2">
+    <div class="card green">
+      <h3>1 · Should we rewrite everything?</h3>
+      <p><span class="tag no">No</span> A rewrite is the #1 way startups die. Your PHP + React app already works in production. We make it tenant-aware with a <b>targeted refactor</b>, not a rebuild.</p>
+    </div>
+    <div class="card blue">
+      <h3>2 · Should we change hosting?</h3>
+      <p><span class="tag rec">Yes</span> Shared cPanel cannot do programmatic provisioning, autoscaling or a 99%+ SLA. Move to <b>managed cloud (VPS + managed MySQL + Cloudflare)</b>.</p>
+    </div>
+    <div class="card">
+      <h3>3 · What multi-tenancy model?</h3>
+      <p><b>Database-per-tenant.</b> Each customer gets their own copy of your <i>current</i> schema. Your data model is reused verbatim — strongest isolation, easiest sell.</p>
+    </div>
+    <div class="card">
+      <h3>4 · How long &amp; how much?</h3>
+      <p><b>~13–16 weeks</b> to general availability. Infra for 200 tenants ≈ <b>$300–500/mo</b> (~₹25k–42k). Gross margin 80%+ at ₹999/tenant.</p>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <p class="muted small">The rest of this deck details the architecture, hosting, security, costing, readiness gaps and a phase-by-phase rollout.</p>
+  <p class="foot">IDNUK → SaaS · 2 / 21</p>
+</section>
+
+<!-- 3 WHERE WE ARE -->
+<section class="slide">
+  <p class="kicker">Baseline</p>
+  <h2>Where we are today</h2>
+  <div class="grid g2">
+    <div>
+      <div class="card">
+        <h3>Current stack</h3>
+        <ul>
+          <li>PHP (procedural) API · ~19 endpoint files · shared <span class="small">helpers/api.php</span></li>
+          <li>React 18 + Vite SPA · two bundles (marketing + app)</li>
+          <li>MySQL — <b>one database</b> (<span class="small">smanwefl_idnuk</span>, ~35 tables/views)</li>
+          <li>Namecheap shared cPanel · deploy via GitHub Actions (FTPS)</li>
+          <li>Token sessions (sliding 8h), day-lock, audit log, backups, Sentry</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3>What blocks SaaS today</h3>
+        <ul class="x check">
+          <li>Single hardcoded DB — one business only</li>
+          <li>No signup / tenant / subscription concept</li>
+          <li>Shared hosting: no auto-provisioning, weak SLA, limited connections &amp; scaling</li>
+          <li>Secrets live in a committed config file</li>
+          <li>No billing, trials, or plan/feature gating</li>
+        </ul>
+      </div>
+      <div class="card green" style="margin-top:14px">
+        <h3>What already helps us</h3>
+        <ul class="check">
+          <li><b>migrateOnce()</b> runs per-DB → tenant migrations are basically free</li>
+          <li>Permissions, audit log, day-lock, print templates, branding settings already exist</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 3 / 21</p>
+</section>
+
+<!-- 4 OPTIONS -->
+<section class="slide">
+  <p class="kicker">Strategy</p>
+  <h2>Three ways forward — and the recommendation</h2>
+  <table>
+    <thead><tr><th>Option</th><th>What it is</th><th>Effort / Risk</th><th>Scales to self-service?</th><th></th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>A · Manual clones</b></td>
+        <td>Copy the whole app+DB per customer by hand on a VPS</td>
+        <td>Low / Low</td>
+        <td>No — every customer is manual ops</td>
+        <td><span class="tag maybe">Stop-gap</span></td>
+      </tr>
+      <tr style="background:#f0fdf4">
+        <td><b>B · DB-per-tenant SaaS</b></td>
+        <td>One control plane + dynamic per-tenant DB + signup/billing on managed cloud</td>
+        <td>Medium / Low–Med</td>
+        <td><b>Yes</b> — fully automated self-service</td>
+        <td><span class="tag rec">Recommended</span></td>
+      </tr>
+      <tr>
+        <td><b>C · Full rewrite</b></td>
+        <td>Re-platform to microservices + shared-schema multi-tenant</td>
+        <td>Very High / High</td>
+        <td>Yes, eventually</td>
+        <td><span class="tag no">Avoid now</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="grid g3" style="margin-top:8px">
+    <div class="card"><h3>Why not A</h3><p class="small">Fine for your first 2–3 customers, but 200 customers × manual setup, updates and backups is unworkable and error-prone.</p></div>
+    <div class="card green"><h3>Why B wins</h3><p class="small">Preserves your data model, gives bank-grade tenant isolation, automates everything, and reaches thousands of tenants on modest infra.</p></div>
+    <div class="card"><h3>Why not C</h3><p class="small">Months of cost for zero new customer value. Re-architect <i>incrementally</i> only where scale demands it.</p></div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 4 / 21</p>
+</section>
+
+<!-- 5 ARCHITECTURE DIAGRAM -->
+<section class="slide">
+  <p class="kicker">Recommended Architecture · Option B</p>
+  <h2>Database-per-tenant, one control plane</h2>
+  <svg viewBox="0 0 1000 430" width="100%" height="430" font-family="Segoe UI, sans-serif">
+    <!-- customer -->
+    <rect x="20" y="180" width="120" height="64" rx="10" fill="#0f4c2a"/>
+    <text x="80" y="206" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">Customers</text>
+    <text x="80" y="226" fill="#bbf7d0" font-size="11" text-anchor="middle">idnuk.com</text>
+    <!-- cloudflare -->
+    <rect x="180" y="184" width="120" height="56" rx="10" fill="#f59e0b"/>
+    <text x="240" y="208" fill="#fff" font-size="12.5" font-weight="700" text-anchor="middle">Cloudflare</text>
+    <text x="240" y="225" fill="#fff7ed" font-size="10.5" text-anchor="middle">CDN · WAF · TLS</text>
+    <!-- LB / app tier -->
+    <rect x="340" y="150" width="170" height="124" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="425" y="172" fill="#1d4ed8" font-size="12" font-weight="800" text-anchor="middle">APP TIER (stateless)</text>
+    <rect x="356" y="184" width="138" height="34" rx="7" fill="#1d4ed8"/>
+    <text x="425" y="206" fill="#fff" font-size="11.5" text-anchor="middle">PHP-FPM + Nginx ×N</text>
+    <rect x="356" y="226" width="138" height="34" rx="7" fill="#2563eb"/>
+    <text x="425" y="248" fill="#fff" font-size="11" text-anchor="middle">React SPA (served via CDN)</text>
+    <!-- control plane -->
+    <rect x="560" y="40" width="200" height="96" rx="12" fill="#0f4c2a"/>
+    <text x="660" y="64" fill="#fff" font-size="12.5" font-weight="800" text-anchor="middle">CONTROL PLANE</text>
+    <text x="660" y="84" fill="#dcfce7" font-size="10.8" text-anchor="middle">tenants · users · plans</text>
+    <text x="660" y="100" fill="#dcfce7" font-size="10.8" text-anchor="middle">subscriptions · trials</text>
+    <text x="660" y="116" fill="#dcfce7" font-size="10.8" text-anchor="middle">feature flags · routing</text>
+    <!-- redis -->
+    <rect x="560" y="150" width="92" height="50" rx="10" fill="#dc2626"/>
+    <text x="606" y="172" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Redis</text>
+    <text x="606" y="189" fill="#fee2e2" font-size="9.5" text-anchor="middle">sessions·cache</text>
+    <!-- razorpay -->
+    <rect x="668" y="150" width="92" height="50" rx="10" fill="#1e293b"/>
+    <text x="714" y="172" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Razorpay</text>
+    <text x="714" y="189" fill="#cbd5e1" font-size="9.5" text-anchor="middle">billing</text>
+    <!-- tenant DBs -->
+    <rect x="800" y="40" width="180" height="350" rx="12" fill="#f0fdf4" stroke="#bbf7d0"/>
+    <text x="890" y="62" fill="#15803d" font-size="12" font-weight="800" text-anchor="middle">MANAGED MySQL</text>
+    <text x="890" y="78" fill="#16a34a" font-size="10" text-anchor="middle">(HA · auto-backup)</text>
+    <g font-size="10.5" text-anchor="middle">
+      <rect x="818" y="92" width="144" height="30" rx="6" fill="#16a34a"/><text x="890" y="112" fill="#fff">db: tenant_0001 (your schema)</text>
+      <rect x="818" y="128" width="144" height="30" rx="6" fill="#16a34a"/><text x="890" y="148" fill="#fff">db: tenant_0002 (your schema)</text>
+      <rect x="818" y="164" width="144" height="30" rx="6" fill="#16a34a"/><text x="890" y="184" fill="#fff">db: tenant_0003 (your schema)</text>
+      <rect x="818" y="206" width="144" height="22" rx="6" fill="#bbf7d0"/><text x="890" y="221" fill="#166534">… up to 200+ …</text>
+      <rect x="818" y="300" width="144" height="34" rx="6" fill="#0f4c2a"/><text x="890" y="316" fill="#fff">control_plane DB</text><text x="890" y="328" fill="#bbf7d0" font-size="9">(the only new schema)</text>
+    </g>
+    <!-- arrows -->
+    <g stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#a)">
+      <path d="M140 212 H178"/>
+      <path d="M300 212 H338"/>
+      <path d="M510 200 C 540 200, 540 92, 558 92"/>
+      <path d="M510 220 H558"/>
+      <path d="M510 235 C 600 235, 620 205, 660 202"/>
+      <path d="M760 90 H798"/>
+      <path d="M510 210 C 700 210, 720 150, 800 130"/>
+    </g>
+    <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#94a3b8"/></marker></defs>
+  </svg>
+  <p class="small muted">Login resolves the tenant in the control plane → the app opens that tenant's database for the request. A query can never cross tenants, because the connection itself is scoped.</p>
+  <p class="foot">IDNUK → SaaS · 5 / 21</p>
+</section>
+
+<!-- 6 PRESERVES DATA MODEL -->
+<section class="slide">
+  <p class="kicker">Your Key Constraint</p>
+  <h2>How this leaves your data model untouched</h2>
+  <div class="grid g2">
+    <div>
+      <p class="lead">Today the app talks to one fixed database:</p>
+      <div class="card"><code class="small">define('DB_NAME', 'smanwefl_idnuk');</code></div>
+      <p class="lead" style="margin-top:14px">We change <b>one thing</b> — resolve the DB name from the logged-in tenant instead of a constant:</p>
+      <div class="card"><code class="small">$db = connectTenant($auth-&gt;tenant_db);<br/>// every existing query runs unchanged</code></div>
+      <ul class="check" style="margin-top:12px">
+        <li>Same tables, columns, views, indexes — a clone of today's schema</li>
+        <li>Your pilot (Sri Murugan &amp; Co) simply becomes <b>Tenant #1</b></li>
+        <li><b>migrateOnce()</b> already self-migrates each DB on first hit after a deploy → schema changes roll out to all tenants automatically</li>
+      </ul>
+    </div>
+    <div class="card green">
+      <h3>What is genuinely new (small &amp; separate)</h3>
+      <ul>
+        <li>A <b>control-plane</b> database: <span class="small">tenants, subscriptions, trials, plans, feature_flags, platform_users</span></li>
+        <li>A thin <b>tenant-router</b> in the auth layer (login → tenant → DB handle)</li>
+        <li>A <b>provisioning</b> job (create DB, import schema, seed defaults)</li>
+        <li>A <b>billing</b> module (Razorpay) + a marketing/signup site</li>
+      </ul>
+      <p class="small muted">None of this edits your business tables. It wraps around them.</p>
+    </div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 6 / 21</p>
+</section>
+
+<!-- 7 SIGNUP FLOW -->
+<section class="slide">
+  <p class="kicker">Self-Service Experience</p>
+  <h2>Signup → 14-day trial → paid, with zero manual ops</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><h3>Sign up</h3><p class="small">Owner visits idnuk.com, enters shop name, email, phone, password.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><h3>Auto-provision</h3><p class="small">System creates <code>tenant_NNNN</code> DB, imports your schema, seeds products/categories/settings, makes the admin user.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><h3>Trial starts</h3><p class="small"><b>trial_ends_at = +14 days.</b> Full access, no card required. Welcome email.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><h3>Use the app</h3><p class="small">Their own data, branding, modules — the IDNUK app they already know.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">5</div><h3>Convert</h3><p class="small">Day 11–14 nudges. They pick a plan, pay via Razorpay (UPI/card). Subscription = active.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card amber">
+      <h3>If they don't pay</h3>
+      <p class="small">After day 14 the account moves to <b>read-only / locked</b> with a clear "Subscribe to continue" screen. Data is retained 30–60 days, then archived/purged per policy. No data is ever shown to another tenant.</p>
+    </div>
+    <div class="card blue">
+      <h3>Provisioning time</h3>
+      <p class="small">Target <b>&lt; 30 seconds</b> from "Create account" to "You're in." Schema import is a fixed template, so it's fast and identical for everyone.</p>
+    </div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 7 / 21</p>
+</section>
+
+<!-- 8 BILLING -->
+<section class="slide">
+  <p class="kicker">Monetization</p>
+  <h2>Subscriptions &amp; billing (Razorpay for India)</h2>
+  <div class="grid g2">
+    <div>
+      <div class="card">
+        <h3>Why Razorpay</h3>
+        <ul>
+          <li>UPI, cards, netbanking, wallets — what Indian SMBs actually use</li>
+          <li>Native <b>Subscriptions API</b> for recurring auto-debit (UPI AutoPay / e-mandate)</li>
+          <li>Webhooks drive subscription state; GST-compliant invoices built in</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Subscription lifecycle</h3>
+        <div class="kv"><span>trialing</span><b>14 days, full access</b></div>
+        <div class="kv"><span>active</span><b>paid, auto-renews</b></div>
+        <div class="kv"><span>past_due</span><b>retry + grace, then lock</b></div>
+        <div class="kv"><span>canceled</span><b>read-only → archive</b></div>
+      </div>
+    </div>
+    <div>
+      <div class="card red">
+        <h3>⚠ Tax note — read this</h3>
+        <p class="small">Your <b>mandi produce</b> is GST-exempt — but <b>selling software (SaaS) is taxable at 18% GST</b>. You'll need GST registration for the SaaS business and must charge GST on subscriptions. Keep this entirely separate from the commission business. (Talk to your CA before launch.)</p>
+      </div>
+      <div class="card green" style="margin-top:12px">
+        <h3>What we build</h3>
+        <ul class="check">
+          <li>Plan catalog (Starter / Pro)</li>
+          <li>Trial countdown + paywall gate</li>
+          <li>Razorpay checkout + webhook handler</li>
+          <li>Invoices, receipts, billing history in-app</li>
+          <li>Admin dashboard: MRR, trials, churn</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 8 / 21</p>
+</section>
+
+<!-- 9 CUSTOMIZATION -->
+<section class="slide">
+  <p class="kicker">"Customization for each customer"</p>
+  <h2>Configurable, not forked — the golden SaaS rule</h2>
+  <p class="lead">Every customer can look and behave differently — driven by <b>configuration</b>, never by separate copies of the code. One codebase serves all 200+ tenants.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Branding</h3><ul class="small"><li>Logo, shop name (EN/Tamil)</li><li>Print/bill templates</li><li>Receipt headers, terms</li><li><span class="muted">(already in your app)</span></li></ul></div>
+    <div class="card"><h3>Modules / Features</h3><ul class="small"><li>Per-tenant <b>feature flags</b>: Yard, Market, Reports, Tally export…</li><li>Plans unlock feature sets</li><li>Sidebar shows only what's enabled</li></ul></div>
+    <div class="card"><h3>Business rules</h3><ul class="small"><li>Commission %, coolie, sakku defaults</li><li>Units, rounding, languages</li><li>Working-date / day-lock policy</li></ul></div>
+  </div>
+  <div class="card amber" style="margin-top:14px">
+    <h3>Discipline that keeps you sane at scale</h3>
+    <p class="small">If a customer needs something truly unique, it becomes a <b>configurable option for everyone</b>, not a private code branch. Per-customer code forks would make 200 customers impossible to maintain or update. Everything ships from one pipeline; customization is data.</p>
+  </div>
+  <p class="foot">IDNUK → SaaS · 9 / 21</p>
+</section>
+
+<!-- 10 HOSTING -->
+<section class="slide">
+  <p class="kicker">Hosting — yes, we move</p>
+  <h2>Off shared cPanel → managed cloud</h2>
+  <table>
+    <thead><tr><th>Capability</th><th>Shared cPanel (today)</th><th>Managed Cloud (target)</th></tr></thead>
+    <tbody>
+      <tr><td>Create DBs on the fly</td><td class="pill">✕ manual only</td><td>✓ programmatic provisioning</td></tr>
+      <tr><td>Scale app under load</td><td class="pill">✕ fixed, shared CPU</td><td>✓ add stateless app nodes</td></tr>
+      <tr><td>DB high-availability</td><td class="pill">✕ none</td><td>✓ managed MySQL w/ failover + PITR backups</td></tr>
+      <tr><td>Uptime SLA</td><td class="pill">~ best-effort</td><td>✓ 99.9% infra SLA achievable</td></tr>
+      <tr><td>Security (WAF/DDoS/secrets)</td><td class="pill">~ limited</td><td>✓ Cloudflare WAF + secrets manager</td></tr>
+      <tr><td>Cost at 200 tenants</td><td class="pill">cheap but a dead end</td><td>$300–500/mo, headroom to thousands</td></tr>
+    </tbody>
+  </table>
+  <div class="grid g2" style="margin-top:8px">
+    <div class="card green"><h3>Recommended providers (any one)</h3><p class="small"><b>App:</b> Hetzner / DigitalOcean / AWS Lightsail (Docker + Nginx + PHP-FPM). <b>DB:</b> DigitalOcean Managed MySQL or AWS RDS. <b>Edge:</b> Cloudflare. <b>Storage:</b> S3-compatible (backups, PDFs, logos). <b>Region: India</b> (Mumbai) for latency + data residency.</p></div>
+    <div class="card blue"><h3>Keep what works</h3><p class="small">Same Git-based CI/CD (now building Docker images instead of FTPS), same Sentry, same backup logic — re-pointed at object storage and run centrally across tenants.</p></div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 10 / 21</p>
+</section>
+
+<!-- 11 SCALE -->
+<section class="slide">
+  <p class="kicker">Scale &amp; Performance</p>
+  <h2>Comfortable at 200, headroom for thousands</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Why 200 tenants is easy here</h3>
+      <ul>
+        <li>A mandi is <b>low-throughput</b> (tens–hundreds of bills/day each). 200 of them is still light DB traffic.</li>
+        <li>MySQL handles <b>thousands of schemas</b> on one managed instance — we watch table-cache &amp; connections, add <b>ProxySQL</b> only if needed.</li>
+        <li><b>Stateless app nodes</b> + sessions in <b>Redis</b> → add nodes horizontally behind a load balancer in minutes.</li>
+        <li><b>Cloudflare CDN</b> serves the React app globally; API stays light.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Performance budget (the "premium feel")</h3>
+      <div class="kv"><span>First app load</span><b>&lt; 2.0 s</b></div>
+      <div class="kv"><span>Page/API response (p95)</span><b>&lt; 400 ms</b></div>
+      <div class="kv"><span>Signup → ready</span><b>&lt; 30 s</b></div>
+      <div class="kv"><span>Concurrent tenants</span><b>200 → 2,000 w/o redesign</b></div>
+      <p class="small muted" style="margin-top:10px">We already added prefetch + skeletons + sliding sessions; the SaaS tier adds CDN + Redis + connection pooling to hold these numbers under load.</p>
+    </div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 11 / 21</p>
+</section>
+
+<!-- 12 SECURITY -->
+<section class="slide">
+  <p class="kicker">Security &amp; Compliance</p>
+  <h2>Built for handling other people's money</h2>
+  <div class="grid g3">
+    <div class="card green"><h3>Tenant isolation</h3><ul class="small"><li>DB-per-tenant = hard boundary</li><li>Tenant resolved from the signed session, <b>never</b> from client input</li><li>Per-tenant DB credentials</li></ul></div>
+    <div class="card"><h3>Platform security</h3><ul class="small"><li>TLS everywhere · Cloudflare WAF + rate limits</li><li>Secrets in a manager, <b>not</b> in git</li><li>Brute-force lockout (have it), 2FA for admins</li><li>Encrypted backups + restore drills</li></ul></div>
+    <div class="card blue"><h3>Compliance (India)</h3><ul class="small"><li><b>DPDP Act 2023</b>: consent, data-retention, deletion on request</li><li>SaaS <b>18% GST</b> invoicing</li><li>Audit log (have it) per tenant</li><li>Pen test before GA</li></ul></div>
+  </div>
+  <div class="card amber" style="margin-top:14px">
+    <h3>Immediate pre-launch must-dos (carried from ops hardening)</h3>
+    <p class="small">Rotate the DB password currently in <code>config/database.php</code> and move all secrets out of the repo · force HTTPS · enable centralized encrypted backups with tested restores · set up uptime + error alerting.</p>
+  </div>
+  <p class="foot">IDNUK → SaaS · 12 / 21</p>
+</section>
+
+<!-- 13 SLA -->
+<section class="slide">
+  <p class="kicker">Reliability</p>
+  <h2>What "uptime" really costs — two tiers</h2>
+  <table>
+    <thead><tr><th>Target</th><th>Downtime budget</th><th>What it requires</th><th class="r">Infra /mo</th></tr></thead>
+    <tbody>
+      <tr><td><b>99%</b> (your ask)</td><td>~7.2 h / month</td><td>Single well-run app node + managed MySQL + backups + alerting</td><td class="r">~$150–200</td></tr>
+      <tr style="background:#f0fdf4"><td><b>99.9%</b> (recommended)</td><td>~43 min / month</td><td>2+ app nodes behind LB + managed MySQL with failover + Redis + Cloudflare</td><td class="r">~$350–500</td></tr>
+      <tr><td>99.99%</td><td>~4 min / month</td><td>Multi-AZ, read replicas, on-call rotation — premature today</td><td class="r">$1k+</td></tr>
+    </tbody>
+  </table>
+  <div class="grid g2" style="margin-top:10px">
+    <div class="card green"><h3>Recommendation</h3><p class="small">Launch on the <b>99.9% tier</b> — the extra ~$200/mo is trivial against 200 paying customers and protects your reputation while you're winning trust. It's the same architecture, just doubled app nodes + DB failover.</p></div>
+    <div class="card"><h3>How we prove it</h3><p class="small">Uptime monitor on <code>/health</code> (have it), status page, Sentry error alerting, monthly backup-restore drill, documented runbook (have a start).</p></div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 13 / 21</p>
+</section>
+
+<!-- 14 READINESS -->
+<section class="slide">
+  <p class="kicker">Application Readiness</p>
+  <h2>Gap analysis: today → SaaS-ready</h2>
+  <table>
+    <thead><tr><th>Area</th><th>Have</th><th>Need to build</th><th>Size</th></tr></thead>
+    <tbody>
+      <tr><td>Business app (bills, reports, ledger…)</td><td>✓ Production-proven</td><td>—</td><td class="pill">done</td></tr>
+      <tr><td>Per-DB migrations</td><td>✓ migrateOnce()</td><td>Central runner across all tenants</td><td class="pill">S</td></tr>
+      <tr><td>Auth / sessions</td><td>✓ Sliding tokens</td><td>Tenant-scoped JWT + Redis store</td><td class="pill">M</td></tr>
+      <tr><td>Multi-tenancy</td><td>✕</td><td>Control-plane DB + dynamic DB resolver</td><td class="pill">M</td></tr>
+      <tr><td>Signup &amp; provisioning</td><td>✕</td><td>Marketing/signup site + auto-provision job</td><td class="pill">M</td></tr>
+      <tr><td>Billing</td><td>✕</td><td>Razorpay subscriptions + trial gating + invoices</td><td class="pill">M</td></tr>
+      <tr><td>Feature flags / plans</td><td>~ Permissions exist</td><td>Tenant-level flags + plan→feature map</td><td class="pill">S</td></tr>
+      <tr><td>Hosting / infra</td><td>✕ Shared cPanel</td><td>Cloud, Docker, CI/CD, CDN, managed DB, secrets</td><td class="pill">M</td></tr>
+      <tr><td>Observability / SLA</td><td>~ Sentry, health</td><td>Central logs, metrics, status page, on-call</td><td class="pill">S</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">S ≈ days · M ≈ 1–3 weeks. The business app — the hardest, riskiest part — is <b>already done</b>. The remaining work is the SaaS "wrapper".</p>
+  <p class="foot">IDNUK → SaaS · 14 / 21</p>
+</section>
+
+<!-- 15 COSTING -->
+<section class="slide">
+  <p class="kicker">Costing</p>
+  <h2>Monthly infrastructure — 200 tenants</h2>
+  <div class="grid g2">
+    <div>
+      <table>
+        <thead><tr><th>Component</th><th class="r">99.9% tier /mo</th></tr></thead>
+        <tbody>
+          <tr><td>App nodes ×2 (4 GB)</td><td class="r num">$60–100</td></tr>
+          <tr><td>Managed MySQL (HA, 4 GB)</td><td class="r num">$100–150</td></tr>
+          <tr><td>Redis (managed, small)</td><td class="r num">$15–25</td></tr>
+          <tr><td>Load balancer</td><td class="r num">$12–20</td></tr>
+          <tr><td>Object storage + backups</td><td class="r num">$10–20</td></tr>
+          <tr><td>Cloudflare (Pro)</td><td class="r num">$20</td></tr>
+          <tr><td>Email (transactional)</td><td class="r num">$10–15</td></tr>
+          <tr><td>Monitoring + Sentry</td><td class="r num">$0–30</td></tr>
+          <tr><td>Domain / TLS</td><td class="r num">~$2</td></tr>
+          <tr style="background:#f0fdf4"><td><b>Total infra</b></td><td class="r num"><b>$240–480 /mo</b></td></tr>
+          <tr><td class="small muted">Razorpay fees</td><td class="r small muted">~2% of revenue</td></tr>
+        </tbody>
+      </table>
+      <p class="small muted">≈ <b>₹20k–40k/month</b>. Per-tenant cost ≈ <b>$1.2–2.4</b> (~₹100–200).</p>
+    </div>
+    <div>
+      <div class="card"><h3>One-time build (engineering)</h3>
+        <p class="small">If you hire 1–2 engineers for ~3.5–4 months, budget the build as salary/contract for that window. The platform reuses your existing app, so it's <b>weeks, not a year</b>. Plus ~$1–3k for a pre-launch pen test.</p>
+      </div>
+      <div class="card green" style="margin-top:12px"><h3>Other run costs</h3>
+        <ul class="small">
+          <li>Support tooling (helpdesk/WhatsApp): $0–50/mo</li>
+          <li>Razorpay payout/GST handled by your CA</li>
+          <li>Scale to ~1,000 tenants ≈ 2–3× infra, not linear</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="foot">IDNUK → SaaS · 15 / 21</p>
+</section>
+
+<!-- 16 UNIT ECONOMICS -->
+<section class="slide">
+  <p class="kicker">Unit Economics</p>
+  <h2>The business case at 200 customers</h2>
+  <div class="grid g3">
+    <div class="card"><p class="pill">Blended price</p><div class="big">₹999<span style="font-size:15px">/mo</span></div><p class="small muted">Starter ₹799 · Pro ₹1,499</p></div>
+    <div class="card green"><p class="pill">Monthly revenue @200</p><div class="big">₹2.0L</div><p class="small muted">≈ $2,400 / mo</p></div>
+    <div class="card blue"><p class="pill">Gross margin</p><div class="big">~83%</div><p class="small muted">after infra + Razorpay</p></div>
+  </div>
+  <table style="margin-top:14px">
+    <thead><tr><th>Scenario</th><th class="r">Customers</th><th class="r">MRR</th><th class="r">Infra+fees</th><th class="r">Gross profit/mo</th></tr></thead>
+    <tbody>
+      <tr><td>Beta</td><td class="r num">10</td><td class="r num">₹10k</td><td class="r num">₹16k</td><td class="r num">(invest)</td></tr>
+      <tr><td>Ramp</td><td class="r num">50</td><td class="r num">₹50k</td><td class="r num">₹22k</td><td class="r num">₹28k</td></tr>
+      <tr style="background:#f0fdf4"><td><b>Wave 1 target</b></td><td class="r num">200</td><td class="r num">₹2.0L</td><td class="r num">₹34k</td><td class="r num"><b>₹1.66L</b></td></tr>
+      <tr><td>Scale</td><td class="r num">1,000</td><td class="r num">₹10L</td><td class="r num">₹1.2L</td><td class="r num">₹8.8L</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Illustrative; refine price after beta. Even at 50 paying customers you're cash-flow positive on infra by a wide margin.</p>
+  <p class="foot">IDNUK → SaaS · 16 / 21</p>
+</section>
+
+<!-- 17 TIMELINE -->
+<section class="slide">
+  <p class="kicker">Rollout Timeline</p>
+  <h2>~13–16 weeks to general availability</h2>
+  <div class="timeline">
+    <div class="bar"><div class="lbl">P0 · Cloud foundation</div><div class="track"><div class="fill" style="left:0;width:13%;background:#0f4c2a">Wk 1–2</div></div></div>
+    <div class="bar"><div class="lbl">P1 · Multi-tenancy core</div><div class="track"><div class="fill" style="left:13%;width:25%;background:#1a7a45">Wk 3–6</div></div></div>
+    <div class="bar"><div class="lbl">P2 · Billing &amp; trials</div><div class="track"><div class="fill" style="left:38%;width:19%;background:#16a34a">Wk 6–9</div></div></div>
+    <div class="bar"><div class="lbl">P3 · Self-service polish</div><div class="track"><div class="fill" style="left:53%;width:19%;background:#2563eb">Wk 9–12</div></div></div>
+    <div class="bar"><div class="lbl">P4 · Hardening &amp; load test</div><div class="track"><div class="fill" style="left:69%;width:13%;background:#b45309">Wk 12–14</div></div></div>
+    <div class="bar"><div class="lbl">P5 · Beta (10) → GA</div><div class="track"><div class="fill" style="left:80%;width:20%;background:#dc2626">Wk 14–16</div></div></div>
+  </div>
+  <table style="margin-top:14px">
+    <thead><tr><th>Phase</th><th>Outcome</th><th>De-risks</th></tr></thead>
+    <tbody>
+      <tr><td><b>P0</b></td><td>Pilot running on cloud + Docker + CI/CD + Cloudflare + backups</td><td>Hosting move (do it first)</td></tr>
+      <tr><td><b>P1</b></td><td>Control plane, dynamic DB, signup, auto-provisioning, Tenant&nbsp;#1 = your shop</td><td>The core bet</td></tr>
+      <tr><td><b>P2</b></td><td>Razorpay subscriptions, 14-day trial gate, invoices</td><td>Revenue</td></tr>
+      <tr><td><b>P3</b></td><td>Onboarding wizard, branding, feature flags, plan management</td><td>Self-service</td></tr>
+      <tr><td><b>P4</b></td><td>Pen test, 200-tenant load test, DR drill, runbook</td><td>SLA &amp; trust</td></tr>
+      <tr><td><b>P5</b></td><td>10 real beta shops, fix, then open idnuk.com to all</td><td>Product-market fit</td></tr>
+    </tbody>
+  </table>
+  <p class="foot">IDNUK → SaaS · 17 / 21</p>
+</section>
+
+<!-- 18 MIGRATION -->
+<section class="slide">
+  <p class="kicker">Migration of the Pilot</p>
+  <h2>Sri Murugan &amp; Co becomes Tenant #1 — safely</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><h3>Stand up cloud</h3><p class="small">New environment live in parallel; current cPanel keeps running untouched.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><h3>Import as tenant_0001</h3><p class="small">Today's DB restored as the first tenant DB. Identical schema → zero changes.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><h3>Parallel run</h3><p class="small">Verify bills, reports, ledgers match exactly on the new platform.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><h3>Cut over</h3><p class="small">Point idnuk.com to cloud during a quiet window; rollback plan ready.</p></div>
+  </div>
+  <div class="card green" style="margin-top:16px">
+    <p><b>Risk to your live business: near-zero.</b> The pilot's data and workflow are preserved byte-for-byte; the move is additive and reversible. Your shop is also the best possible reference customer for selling to the next 199.</p>
+  </div>
+  <p class="foot">IDNUK → SaaS · 18 / 21</p>
+</section>
+
+<!-- 19 TEAM -->
+<section class="slide">
+  <p class="kicker">Operating Model</p>
+  <h2>What it takes to run this</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>To build (3.5–4 months)</h3>
+      <ul>
+        <li><b>1 senior full-stack</b> (PHP + React + cloud) — leads the platform</li>
+        <li><b>+0.5–1 engineer</b> for billing/frontend polish (can be part-time)</li>
+        <li><b>You</b> — product, pricing, first customers, domain expertise</li>
+        <li>Fractional <b>DevOps</b> for the cloud setup (a few weeks)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>To operate (ongoing)</h3>
+      <ul>
+        <li>1 engineer part-time for maintenance + features</li>
+        <li>Support via WhatsApp/helpdesk (you + 1, scales with customers)</li>
+        <li>Monthly: backup-restore drill, security patches, cost review</li>
+        <li>CA for GST/invoicing on the SaaS entity</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card blue" style="margin-top:14px">
+    <h3>Build vs. hosted-billing trade-off</h3>
+    <p class="small">Using Razorpay (vs. building billing) and managed MySQL/Redis (vs. self-hosting) trades a little money for a lot of time and reliability. At your stage that trade is always worth it.</p>
+  </div>
+  <p class="foot">IDNUK → SaaS · 19 / 21</p>
+</section>
+
+<!-- 20 RISKS -->
+<section class="slide">
+  <p class="kicker">Risks &amp; Mitigations</p>
+  <h2>What could go wrong — and the guardrail</h2>
+  <table>
+    <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Cross-tenant data leak (the #1 SaaS fear)</td><td>DB-per-tenant isolation + tenant from signed session only + automated isolation tests in CI</td></tr>
+      <tr><td>"Just one custom thing" → 200 code forks</td><td>Strict config-driven customization; features are flags, never branches</td></tr>
+      <tr><td>Hosting migration breaks the live shop</td><td>Parallel run + byte-for-byte verify + instant rollback; cPanel stays up until proven</td></tr>
+      <tr><td>Scope creep delays revenue</td><td>Ship the SaaS wrapper first; defer nice-to-haves to post-GA</td></tr>
+      <tr><td>Schema change must reach 200 DBs</td><td>migrateOnce() self-migrates per DB on first hit + a central runner with dry-run</td></tr>
+      <tr><td>Payment/GST mistakes</td><td>Razorpay handles compliance; CA reviews GST setup before launch</td></tr>
+      <tr><td>Key-person dependency</td><td>Docs/runbook, repo access for ≥2 people, managed services reduce ops surface</td></tr>
+    </tbody>
+  </table>
+  <p class="foot">IDNUK → SaaS · 20 / 21</p>
+</section>
+
+<!-- 21 NEXT STEPS -->
+<section class="slide cover">
+  <p class="kicker">Decision &amp; Next Steps</p>
+  <h1 style="font-size:38px">Recommended path</h1>
+  <div class="grid g2" style="margin-top:6px">
+    <div>
+      <p class="lead" style="color:#dcfce7"><b>Go with Option B</b> — database-per-tenant SaaS on managed cloud. No rewrite. Move hosting. Reuse your data model. ~13–16 weeks to GA.</p>
+      <ul style="color:#ecfdf5">
+        <li>Launch on the <b>99.9%</b> reliability tier (~$350–500/mo)</li>
+        <li>Migrate your shop as <b>Tenant&nbsp;#1</b>, then beta with 10, then open to 200</li>
+        <li>Razorpay for trials &amp; subscriptions; configurable customization, never forks</li>
+      </ul>
+    </div>
+    <div>
+      <div class="card" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25)">
+        <h3 style="color:#fff">Decisions I need from you</h3>
+        <ul style="color:#ecfdf5" class="small">
+          <li>Approve Option B + the hosting move?</li>
+          <li>Target launch price (₹799 / ₹1,499 — adjust?)</li>
+          <li>Hiring: 1 senior + part-timer, or an agency?</li>
+          <li>Cloud preference (Hetzner/DO/AWS) &amp; India region OK?</li>
+          <li>Green-light P0 (cloud foundation) to start immediately?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:18px;color:#bbf7d0">Next: I can turn this into a phase-by-phase technical implementation plan (P0–P1), with the exact control-plane schema, the tenant-resolver code, and the provisioning script — all without touching your current business tables.</p>
+  <p class="foot" style="color:#bbf7d0">IDNUK → SaaS · 21 / 21</p>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+name: Deploy to Namecheap
+
+on:
+  push:
+    branches: [ main ]
+  # Manual run — used for ROLLBACK. Enter a previous tag (e.g. release-20260620-1450-ab12cd3)
+  # in "ref" to redeploy that exact version. Leave blank to redeploy the latest main.
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag or commit to deploy (blank = latest main). Use a release-* tag to roll back.'
+        required: false
+        default: ''
+
+# Needed so the workflow can push the release tag back to the repo.
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # On a manual run, deploy the ref the user typed; otherwise the pushed commit.
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install & Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Install LFTP
+        run: sudo apt-get install -y lftp
+
+      - name: Deploy via LFTP (upload only, never delete)
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp <<EOF
+          set ftp:ssl-allow true
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+          mirror --reverse --verbose frontend/dist/ /
+          mirror --reverse --verbose backend/api/ /api/
+          mirror --reverse --verbose backend/helpers/ /helpers/
+          mirror --reverse --verbose backend/data/ /data/
+          rm -f /api/upload.php /api/auth_old.php /api/test.php /api/testauth.php /api/error_log
+          quit
+          EOF
+
+      # Tag every successful auto-deploy so you always have a named point to roll back to.
+      # Skipped on manual rollback runs (so redeploying an old tag doesn't create new tags).
+      - name: Tag this release
+        if: github.event_name == 'push'
+        run: |
+          TAG="release-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "Tagged live release: $TAG"
