@@ -46,7 +46,7 @@ jobs:
           protocol: ftps
           local-dir: ./frontend/dist/
           server-dir: /demo/
-          dangerous-clean-slate: false
+          dangerous-clean-slate: true
 
       - name: Deploy Backend API via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
