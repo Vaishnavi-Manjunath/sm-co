@@ -52,11 +52,11 @@ jobs:
           set ftp:ssl-protect-data true
           set ssl:verify-certificate false
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-          mirror --reverse --verbose frontend/dist/ /
-          mirror --reverse --verbose backend/api/ /api/
-          mirror --reverse --verbose backend/helpers/ /helpers/
-          mirror --reverse --verbose backend/data/ /data/
-          rm -f /api/upload.php /api/auth_old.php /api/test.php /api/testauth.php /api/error_log
+          mirror --reverse --verbose frontend/dist/ /demo.smand.co/demo/
+          mirror --reverse --verbose backend/api/ /demo.smand.co/demo/api/
+          mirror --reverse --verbose backend/helpers/ /demo.smand.co/demo/helpers/
+          mirror --reverse --verbose backend/data/ /demo.smand.co/demo/data/
+          rm -f /demo.smand.co/demo/api/upload.php /demo.smand.co/demo/api/auth_old.php /demo.smand.co/demo/api/test.php /demo.smand.co/demo/api/testauth.php /demo.smand.co/demo/api/error_log
           quit
           EOF
 
