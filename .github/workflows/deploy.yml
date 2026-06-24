@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./frontend/dist/
-          server-dir: /
+          server-dir: /demo/
           dangerous-clean-slate: false
 
       - name: Deploy Backend API via FTP
@@ -56,7 +56,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./backend/api/
-          server-dir: /api/
+          server-dir: /demo/api/
           dangerous-clean-slate: false
 
       - name: Deploy Backend Helpers via FTP
@@ -67,7 +67,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./backend/helpers/
-          server-dir: /helpers/
+          server-dir: /demo/helpers/
           dangerous-clean-slate: false
 
       - name: Deploy Backend Data via FTP
@@ -78,7 +78,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./backend/data/
-          server-dir: /data/
+          server-dir: /demo/data/
           dangerous-clean-slate: false
 
       # Tag every successful auto-deploy so you always have a named point to roll back to.
