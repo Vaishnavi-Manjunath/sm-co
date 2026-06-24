@@ -300,7 +300,7 @@ export function TamilInput({ value, onChange, tamilValue, onTamilChange, label, 
 
 
 // ---- API Base URL (change after deployment) ----
-export const API_BASE = "/api";
+export const API_BASE = "/demo/api";
 
 // ---- Auth Context ----
 const AuthContext = createContext(null);
