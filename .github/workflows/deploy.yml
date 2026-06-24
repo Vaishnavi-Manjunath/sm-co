@@ -46,19 +46,20 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          lftp <<EOF
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<'LFTP_EOF'
           set ftp:ssl-allow true
           set ftp:ssl-force true
           set ftp:ssl-protect-data true
           set ssl:verify-certificate false
-          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+          pwd
+          ls
           mirror --reverse --verbose frontend/dist/ /
           mirror --reverse --verbose backend/api/ /api/
           mirror --reverse --verbose backend/helpers/ /helpers/
           mirror --reverse --verbose backend/data/ /data/
           rm -f /api/upload.php /api/auth_old.php /api/test.php /api/testauth.php /api/error_log
           quit
-          EOF
+          LFTP_EOF
 
       # Tag every successful auto-deploy so you always have a named point to roll back to.
       # Skipped on manual rollback runs (so redeploying an old tag doesn't create new tags).
