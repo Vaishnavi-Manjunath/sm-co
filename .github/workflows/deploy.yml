@@ -37,29 +37,49 @@ jobs:
           npm install
           npm run build
 
-      - name: Install LFTP
-        run: sudo apt-get install -y lftp
+      - name: Deploy Frontend via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./frontend/dist/
+          server-dir: /
+          dangerous-clean-slate: false
 
-      - name: Deploy via LFTP (upload only, never delete)
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        run: |
-          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<'LFTP_EOF'
-          set ftp:ssl-allow true
-          set ftp:ssl-force true
-          set ftp:ssl-protect-data true
-          set ssl:verify-certificate false
-          pwd
-          ls
-          mirror --reverse --verbose frontend/dist/ /
-          mirror --reverse --verbose backend/api/ /api/
-          mirror --reverse --verbose backend/helpers/ /helpers/
-          mirror --reverse --verbose backend/data/ /data/
-          rm -f /api/upload.php /api/auth_old.php /api/test.php /api/testauth.php /api/error_log
-          quit
-          LFTP_EOF
+      - name: Deploy Backend API via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./backend/api/
+          server-dir: /api/
+          dangerous-clean-slate: false
+
+      - name: Deploy Backend Helpers via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./backend/helpers/
+          server-dir: /helpers/
+          dangerous-clean-slate: false
+
+      - name: Deploy Backend Data via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./backend/data/
+          server-dir: /data/
+          dangerous-clean-slate: false
 
       # Tag every successful auto-deploy so you always have a named point to roll back to.
       # Skipped on manual rollback runs (so redeploying an old tag doesn't create new tags).
