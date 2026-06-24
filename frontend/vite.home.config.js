@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 // Built FIRST in the npm script (it empties dist), then the app build adds dist/app/.
 export default defineConfig({
   plugins: [react()],
-  base: '/demo/',
+  base: '/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,

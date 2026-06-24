@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /demo/
+
+    # SSL validation files pass through
+    RewriteRule ^\.well-known/ - [L]
+
+    # PHP files run directly
+    RewriteRule \.php$ - [L]
+
+    # Existing files and folders pass through
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # React SPA — all other routes fall back to app/index.html
+    RewriteRule ^app/ app/index.html [QSA,L]
+</IfModule>

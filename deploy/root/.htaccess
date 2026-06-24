@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # SSL validation files pass through untouched
+    RewriteRule ^\.well-known/ - [L]
+
+    # Let existing real files/dirs through (cgi-bin etc.)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Already under /demo/ — don't rewrite (prevents loop)
+    RewriteCond %{REQUEST_URI} ^/demo/
+    RewriteRule ^ - [L]
+
+    # Everything else: transparently serve from /demo/
+    RewriteRule ^(.*)$ /demo/$1 [L,QSA]
+</IfModule>
