@@ -48,17 +48,6 @@ jobs:
           server-dir: /
           dangerous-clean-slate: false
 
-      - name: Deploy Demo htaccess via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./deploy/demo/
-          server-dir: /demo/
-          dangerous-clean-slate: false
-
       - name: Deploy Frontend via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -68,7 +57,7 @@ jobs:
           protocol: ftps
           local-dir: ./frontend/dist/
           server-dir: /demo/
-          dangerous-clean-slate: false
+          dangerous-clean-slate: true
 
       - name: Deploy Backend API via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
