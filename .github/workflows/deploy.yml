@@ -37,17 +37,6 @@ jobs:
           npm install
           npm run build
 
-      - name: Deploy Root htaccess via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./deploy/root/
-          server-dir: /
-          dangerous-clean-slate: false
-
       - name: Deploy Frontend via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -56,7 +45,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./frontend/dist/
-          server-dir: /demo/
+          server-dir: /
           dangerous-clean-slate: true
 
       - name: Deploy Backend API via FTP
@@ -67,7 +56,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./backend/api/
-          server-dir: /demo/api/
+          server-dir: /api/
           dangerous-clean-slate: false
 
       - name: Deploy Backend Helpers via FTP
@@ -78,7 +67,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./backend/helpers/
-          server-dir: /demo/helpers/
+          server-dir: /helpers/
           dangerous-clean-slate: false
 
       - name: Deploy Backend Data via FTP
@@ -89,7 +78,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./backend/data/
-          server-dir: /demo/data/
+          server-dir: /data/
           dangerous-clean-slate: false
 
       # Tag every successful auto-deploy so you always have a named point to roll back to.

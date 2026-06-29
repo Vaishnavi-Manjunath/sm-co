@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 // The homepage is built separately via vite.home.config.js into the dist root.
 export default defineConfig({
   plugins: [react()],
-  base: '/demo/app/',
+  base: '/app/',
   build: {
     outDir: 'dist/app',
     emptyOutDir: true,           // only empties dist/app, never the homepage at dist root
