@@ -18,7 +18,29 @@ $method = $_SERVER['REQUEST_METHOD'];
 $action = getParam('action', 'login');
 
 $db = getDB();
-migrateOnce('auth', 1, function ($db) {
+migrateOnce('auth', 2, function ($db) {
+    // Users table (created first so ALTER TABLE below never fails on a fresh install)
+    $db->exec("CREATE TABLE IF NOT EXISTS users (
+        id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        username        VARCHAR(50)  NOT NULL UNIQUE,
+        full_name       VARCHAR(100) NOT NULL,
+        full_name_tamil VARCHAR(100) NULL,
+        role            VARCHAR(20)  NOT NULL DEFAULT 'staff',
+        permissions     TEXT         NULL,
+        password_hash   VARCHAR(255) NOT NULL,
+        is_active       TINYINT(1)   NOT NULL DEFAULT 1,
+        last_login      DATETIME     NULL,
+        created_at      DATETIME     DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    // Seed a default admin on first install (only when table is empty)
+    $count = (int)$db->query("SELECT COUNT(*) FROM users")->fetchColumn();
+    if ($count === 0) {
+        $db->prepare("INSERT INTO users (username, full_name, role, is_active, password_hash)
+                      VALUES (?,?,?,?,?)")
+           ->execute(['admin', 'Administrator', 'admin', 1,
+                      password_hash('Admin@1234', PASSWORD_BCRYPT)]);
+    }
+    try { $db->exec("ALTER TABLE users ADD COLUMN permissions TEXT NULL"); } catch (PDOException $e) {}
     $db->exec("CREATE TABLE IF NOT EXISTS user_sessions (
         id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user_id    INT UNSIGNED NOT NULL,
@@ -27,9 +49,6 @@ migrateOnce('auth', 1, function ($db) {
         expires_at DATETIME,
         INDEX idx_token (token)
     )");
-    // Per-user module permissions (JSON array of module ids; admins ignore this)
-    try { $db->exec("ALTER TABLE users ADD COLUMN permissions TEXT NULL"); } catch (PDOException $e) {}
-    // Brute-force protection: track recent login attempts per IP and username
     $db->exec("CREATE TABLE IF NOT EXISTS login_attempts (
         id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         ip           VARCHAR(45) NOT NULL,
