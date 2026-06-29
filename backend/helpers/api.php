@@ -3,7 +3,14 @@
 //  IDNUK SOFTWARE - API Helpers
 // ============================================================
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/database.php';
+$_dbCfg = $_SERVER['DOCUMENT_ROOT'] . '/config/database.php';
+if (!file_exists($_dbCfg)) {
+    http_response_code(503);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'error' => 'Server not configured yet. Please upload config/database.php.']);
+    exit();
+}
+require_once $_dbCfg;
 require_once __DIR__ . '/sentry.php';
 sentry_init();   // inert unless SENTRY_DSN_PHP is configured
 
