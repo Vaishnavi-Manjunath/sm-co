@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /demo/
+    RewriteBase /
 
     # SSL validation files pass through
     RewriteRule ^\.well-known/ - [L]
