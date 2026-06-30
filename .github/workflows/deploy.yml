@@ -47,6 +47,9 @@ jobs:
           local-dir: ./frontend/dist/
           server-dir: /
           dangerous-clean-slate: true
+          exclude: |
+            **/config/**
+            config/**
 
       - name: Deploy Backend API via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
