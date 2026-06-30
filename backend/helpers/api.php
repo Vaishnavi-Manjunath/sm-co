@@ -365,3 +365,303 @@ function nextBillNo(string $prefix, ?string $date = null): string {
 
     return "$prefix-$label-" . str_pad((string)$n, 5, '0', STR_PAD_LEFT);
 }
+
+// ---- Base schema — creates all core tables on a fresh install.
+// Runs on the first request to ANY endpoint (api.php is always included first).
+// Every statement uses CREATE TABLE IF NOT EXISTS so it is safe to run on
+// existing databases — it simply skips tables that already exist.
+migrateOnce('base', 1, function ($db) {
+    $db->exec("CREATE TABLE IF NOT EXISTS party_categories (
+        id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        code       VARCHAR(30)  NOT NULL UNIQUE,
+        name_en    VARCHAR(100) NOT NULL,
+        name_ta    VARCHAR(100) NULL,
+        sort_order INT DEFAULT 0,
+        is_active  TINYINT(1) DEFAULT 1
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS cities (
+        id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        name_en    VARCHAR(100) NOT NULL,
+        name_ta    VARCHAR(100) NULL,
+        state      VARCHAR(50)  NULL,
+        sort_order INT DEFAULT 0,
+        is_active  TINYINT(1) DEFAULT 1,
+        UNIQUE KEY uniq_name (name_en)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS parties (
+        id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        code             VARCHAR(20)  NOT NULL UNIQUE,
+        name_en          VARCHAR(200) NOT NULL,
+        name_ta          VARCHAR(200) NULL,
+        category_id      INT UNSIGNED NOT NULL,
+        reference_id     INT UNSIGNED NULL,
+        city_id          INT UNSIGNED NULL,
+        phone1           VARCHAR(20)  NULL,
+        phone2           VARCHAR(20)  NULL,
+        address          TEXT         NULL,
+        city             VARCHAR(100) NULL,
+        area             VARCHAR(100) NULL,
+        pincode          VARCHAR(10)  NULL,
+        gstin            VARCHAR(20)  NULL,
+        credit_days      INT DEFAULT 14,
+        credit_limit     DECIMAL(12,2) DEFAULT 0,
+        opening_balance  DECIMAL(12,2) DEFAULT 0,
+        opening_bal_type ENUM('dr','cr') DEFAULT 'cr',
+        commission_pct   DECIMAL(5,2) DEFAULT 10,
+        is_active        TINYINT(1) DEFAULT 1,
+        notes            TEXT NULL,
+        legacy_code      VARCHAR(30)  NULL,
+        created_at       DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at       DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_category (category_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS party_truck_links (
+        farmer_id INT UNSIGNED NOT NULL,
+        truck_id  INT UNSIGNED NOT NULL,
+        PRIMARY KEY (farmer_id, truck_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS product_categories (
+        id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        name_en    VARCHAR(100) NOT NULL,
+        name_ta    VARCHAR(100) NULL,
+        sort_order INT DEFAULT 0
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS products (
+        id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        code             VARCHAR(20)  NOT NULL UNIQUE,
+        name_en          VARCHAR(150) NOT NULL,
+        name_ta          VARCHAR(150) NULL,
+        unit_type        ENUM('KG','BAG') DEFAULT 'KG',
+        category_id      INT UNSIGNED NULL,
+        bag_deduction_kg DECIMAL(6,2) DEFAULT 3,
+        vendor_short_kg  DECIMAL(6,2) DEFAULT 0,
+        is_active        TINYINT(1) DEFAULT 1,
+        sort_order       INT DEFAULT 0,
+        created_at       DATETIME DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS bill_sequences (
+        seq_key VARCHAR(40) PRIMARY KEY,
+        last_no INT UNSIGNED DEFAULT 0
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS purchase_bills (
+        id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        bill_no          VARCHAR(30)  NULL,
+        bill_date        DATE         NOT NULL,
+        bill_time        TIME         NULL,
+        party_id         INT UNSIGNED NOT NULL,
+        party_type       VARCHAR(20)  DEFAULT 'FARMER',
+        lorry_party_id   INT UNSIGNED NULL,
+        lorry_no         VARCHAR(30)  NULL,
+        lorry_freight    DECIMAL(10,2) DEFAULT 0,
+        commission_pct   DECIMAL(5,2)  DEFAULT 10,
+        subtotal_weight  DECIMAL(12,2) DEFAULT 0,
+        subtotal_amount  DECIMAL(12,2) DEFAULT 0,
+        total_commission DECIMAL(12,2) DEFAULT 0,
+        total_sakku_amt  DECIMAL(12,2) DEFAULT 0,
+        total_cooly_amt  DECIMAL(12,2) DEFAULT 0,
+        total_sungam_amt DECIMAL(12,2) DEFAULT 0,
+        total_advance    DECIMAL(12,2) DEFAULT 0,
+        other_deductions DECIMAL(12,2) DEFAULT 0,
+        net_payable      DECIMAL(12,2) DEFAULT 0,
+        payment_status   VARCHAR(20)  DEFAULT 'unpaid',
+        payment_mode     VARCHAR(20)  DEFAULT 'cash',
+        payment_ref      VARCHAR(100) NULL,
+        reference_name   VARCHAR(100) NULL,
+        share_token      VARCHAR(40)  NULL,
+        print_count      INT NOT NULL DEFAULT 0,
+        last_printed_at  DATETIME NULL,
+        is_cancelled     TINYINT(1) DEFAULT 0,
+        notes            TEXT NULL,
+        created_by       INT UNSIGNED NULL,
+        created_at       DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_date   (bill_date),
+        INDEX idx_party  (party_id),
+        UNIQUE KEY idx_share (share_token)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS purchase_items (
+        id             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        bill_id        INT UNSIGNED NOT NULL,
+        product_id     INT UNSIGNED NOT NULL,
+        actual_weight  DECIMAL(12,2) DEFAULT 0,
+        bag_deduction  DECIMAL(12,2) DEFAULT 0,
+        billed_weight  DECIMAL(12,2) DEFAULT 0,
+        no_of_bags     INT DEFAULT 0,
+        unit_type      VARCHAR(10) DEFAULT 'KG',
+        purchase_rate  DECIMAL(10,2) DEFAULT 0,
+        gross_amount   DECIMAL(12,2) DEFAULT 0,
+        commission_pct DECIMAL(5,2)  DEFAULT 0,
+        commission_amt DECIMAL(12,2) DEFAULT 0,
+        sakku_qty      INT DEFAULT 0,
+        sakku_rate     DECIMAL(10,2) DEFAULT 0,
+        sakku_amt      DECIMAL(12,2) DEFAULT 0,
+        cooly_amt      DECIMAL(12,2) DEFAULT 0,
+        sungam_amt     DECIMAL(12,2) DEFAULT 0,
+        net_amount     DECIMAL(12,2) DEFAULT 0,
+        notes          TEXT NULL,
+        weights_detail VARCHAR(255) NULL,
+        damage_kg      DECIMAL(10,2) DEFAULT 0,
+        INDEX idx_bill    (bill_id),
+        INDEX idx_product (product_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS sales_bills (
+        id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        bill_no         VARCHAR(30)  NULL,
+        bill_date       DATE         NOT NULL,
+        bill_time       TIME         NULL,
+        party_id        INT UNSIGNED NOT NULL,
+        salesman        VARCHAR(100) NULL,
+        credit_days     INT DEFAULT 0,
+        due_date        DATE         NULL,
+        subtotal_weight DECIMAL(12,2) DEFAULT 0,
+        subtotal_amount DECIMAL(12,2) DEFAULT 0,
+        discount_pct    DECIMAL(5,2)  DEFAULT 0,
+        discount_amt    DECIMAL(12,2) DEFAULT 0,
+        total_sakku_amt DECIMAL(12,2) DEFAULT 0,
+        total_cooly_amt DECIMAL(12,2) DEFAULT 0,
+        net_amount      DECIMAL(12,2) DEFAULT 0,
+        paid_amount     DECIMAL(12,2) DEFAULT 0,
+        balance_due     DECIMAL(12,2) DEFAULT 0,
+        credited_amt    DECIMAL(12,2) DEFAULT 0,
+        opening_balance DECIMAL(12,2) DEFAULT 0,
+        payment_status  VARCHAR(20)  DEFAULT 'unpaid',
+        share_token     VARCHAR(40)  NULL,
+        print_count     INT NOT NULL DEFAULT 0,
+        last_printed_at DATETIME NULL,
+        is_cancelled    TINYINT(1) DEFAULT 0,
+        notes           TEXT NULL,
+        created_by      INT UNSIGNED NULL,
+        created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_party  (party_id),
+        INDEX idx_date   (bill_date),
+        INDEX idx_bal    (is_cancelled, balance_due),
+        UNIQUE KEY idx_share (share_token)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS sales_items (
+        id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        bill_id          INT UNSIGNED NOT NULL,
+        purchase_item_id INT UNSIGNED NULL,
+        product_id       INT UNSIGNED NULL,
+        no_of_bags       INT DEFAULT 0,
+        vendor_weight    DECIMAL(12,2) DEFAULT 0,
+        purchase_weight  DECIMAL(12,2) DEFAULT 0,
+        weight_profit    DECIMAL(12,2) DEFAULT 0,
+        unit_type        VARCHAR(10) DEFAULT 'KG',
+        purchase_rate    DECIMAL(10,2) DEFAULT 0,
+        sale_rate        DECIMAL(10,2) DEFAULT 0,
+        gross_amount     DECIMAL(12,2) DEFAULT 0,
+        discount_pct     DECIMAL(5,2)  DEFAULT 0,
+        discount_amt     DECIMAL(12,2) DEFAULT 0,
+        sakku_qty        INT DEFAULT 0,
+        sakku_rate       DECIMAL(10,2) DEFAULT 0,
+        sakku_amt        DECIMAL(12,2) DEFAULT 0,
+        cooly_amt        DECIMAL(12,2) DEFAULT 0,
+        net_amount       DECIMAL(12,2) DEFAULT 0,
+        margin_amount    DECIMAL(12,2) DEFAULT 0,
+        notes            TEXT NULL,
+        INDEX idx_bill (bill_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS payments_received (
+        id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        receipt_no   VARCHAR(30)  NULL,
+        party_id     INT UNSIGNED NOT NULL,
+        receipt_date DATE         NOT NULL,
+        amount       DECIMAL(12,2) DEFAULT 0,
+        discount_amt DECIMAL(12,2) DEFAULT 0,
+        payment_mode VARCHAR(20) DEFAULT 'cash',
+        bank_name    VARCHAR(80)  NULL,
+        payment_ref  VARCHAR(100) NULL,
+        notes        TEXT NULL,
+        created_by   INT UNSIGNED NULL,
+        created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_party (party_id),
+        INDEX idx_date  (receipt_date)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS payment_allocations (
+        id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        payment_id INT UNSIGNED NOT NULL,
+        bill_id    INT UNSIGNED NOT NULL,
+        amount     DECIMAL(12,2) DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_payment (payment_id),
+        INDEX idx_bill    (bill_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS ledger (
+        id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        txn_date    DATE        NOT NULL,
+        txn_type    VARCHAR(30) NOT NULL,
+        ref_type    VARCHAR(30) NULL,
+        ref_id      INT UNSIGNED NULL,
+        party_id    INT UNSIGNED NULL,
+        description VARCHAR(255) NULL,
+        debit       DECIMAL(12,2) DEFAULT 0,
+        credit      DECIMAL(12,2) DEFAULT 0,
+        created_by  INT UNSIGNED NULL,
+        created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_party_date (party_id, txn_date),
+        INDEX idx_type       (txn_type)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS daily_expenses (
+        id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        expense_date DATE         NOT NULL,
+        category     VARCHAR(60)  DEFAULT 'General',
+        description  VARCHAR(255) NULL,
+        amount       DECIMAL(12,2) DEFAULT 0,
+        payment_mode VARCHAR(20) DEFAULT 'cash',
+        bank_name    VARCHAR(80)  NULL,
+        payment_ref  VARCHAR(100) NULL,
+        created_by   INT UNSIGNED NULL,
+        created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_date (expense_date)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS daily_rates (
+        id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        rate_date   DATE         NOT NULL,
+        product_id  INT UNSIGNED NOT NULL,
+        market_rate DECIMAL(10,2) DEFAULT 0,
+        min_rate    DECIMAL(10,2) DEFAULT 0,
+        max_rate    DECIMAL(10,2) DEFAULT 0,
+        notes       VARCHAR(255) NULL,
+        created_by  INT UNSIGNED NULL,
+        created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY uniq_date_product (rate_date, product_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS tally_exports (
+        id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        export_type VARCHAR(30) DEFAULT 'xml',
+        from_date   DATE        NOT NULL,
+        to_date     DATE        NOT NULL,
+        filename    VARCHAR(255) NULL,
+        created_by  INT UNSIGNED NULL,
+        created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    // Seed default party categories
+    $ins = $db->prepare("INSERT IGNORE INTO party_categories (code, name_en, sort_order) VALUES (?,?,?)");
+    foreach ([
+        ['FARMER',        'Farmer',          1],
+        ['SUPPLIER',      'Supplier',        2],
+        ['MARKET_VENDOR', 'Market Vendor',   3],
+        ['CUSTOMER',      'Customer',        4],
+        ['OVERFLOW',      'Overflow Vendor', 5],
+        ['TRUCK',         'Truck/Reference', 6],
+        ['ORDER_SUPPLIER','Order Supplier',  7],
+    ] as [$code, $en, $sort]) {
+        $ins->execute([$code, $en, $sort]);
+    }
+});
